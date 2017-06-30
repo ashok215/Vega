@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using vega.Persistence;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace WebApplicationBasic
 {
@@ -28,8 +31,11 @@ namespace WebApplicationBasic
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper();
+            services.AddDbContext<VegaDbcontext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             // Add framework services.
-            services.AddMvc();
+           //services.AddMvc();
+           services.AddMvc().AddJsonOptions(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
